@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from typing import TypeVar, Generic, List, get_origin, get_args
 import json
 import database.database as dbase
+
 T = TypeVar('T')
 
 class InterfazRepositorio(Generic[T]):
@@ -11,7 +12,7 @@ class InterfazRepositorio(Generic[T]):
         self.db = dbase.dbConnection()
         theClass = get_args(self.__orig_bases__[0])
         self.collection = theClass[0].__name__.lower()
-
+        
     #Obtene los valores de referencia de una lista
     def getValuesDBRefFromList(self, theList):
         newList = []
@@ -30,6 +31,7 @@ class InterfazRepositorio(Generic[T]):
                 laColeccion = self.db[x[k].collection]
                 valor = laColeccion.find_one({"_id": ObjectId(x[k].id)})
                 valor["_id"] = valor["_id"].__str__()
+                x[k] = valor
                 x[k] = self.getValuesDBRef(x[k])
             elif isinstance(x[k], list) and len(x[k])>0:
                 x[k] = self.getValuesDBRefFromList(x[k])
@@ -88,7 +90,7 @@ class InterfazRepositorio(Generic[T]):
         item = item.__dict__
         updateItem = {"$set": item}
         x = laColeccion.update_one({"_id":_id}, updateItem)
-        return {"updated_count":x.matched_count}
+        return {"updated_count": x.matched_count}
 
     #Borrar
     def delete(self, id):

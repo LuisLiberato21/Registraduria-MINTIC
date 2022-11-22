@@ -4,10 +4,14 @@ from bson import ObjectId
 
 # Ojo Aqui class ResultadoRepositorio(InterfazRepositorio[Mesa]):
 class ResultadoRepositorio(InterfazRepositorio[Resultado]):
+    
+    
     #Da las votaciones por mesa
     def getListadoCandidatosInscritiosMesa(self, id_mesa):
         theQuery = {"mesa.$id": ObjectId(id_mesa)}
         return self.query(theQuery)
+
+
 
     #Da las votaciones por candidato
     def getListadoMesasCandidatoInscrito(self, id_candidato):
@@ -15,12 +19,12 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
         return self.query(theQuery)
 
     #Numero mayor de una cedula
-    def getNumeroCedulaMayorCandidato(self):
+    def getNumeroVotacionMayorCandidato(self):
         query = {
             "$group":{
                 "_id": "$candidato",
-                "max": {
-                    "$max": "$cedula"
+                "Total_votaciones_por_id": {
+                    "$sum": 1
                 },
                 "doc":{
                     "$first": "$$ROOT"
@@ -29,3 +33,4 @@ class ResultadoRepositorio(InterfazRepositorio[Resultado]):
         }
         pipeline = [query]
         return self.queryAgregation(pipeline)
+

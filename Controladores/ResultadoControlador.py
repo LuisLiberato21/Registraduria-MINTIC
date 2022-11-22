@@ -37,13 +37,15 @@ class ResultadoControlador():
     
     def delete(self, id):
         return self.repositorioResultado.delete(id)
+
+
     
     def getListarCandidatosMesa(self, id_mesa):
         return self.repositorioResultado.getListadoCandidatosInscritiosMesa(id_mesa)
-    
+        
+
     def getListarMesasDeInscritoCandidato(self, id_candidato):
         return self.repositorioResultado.getListadoMesasCandidatoInscrito(id_candidato)
 
-    def getMayorCedula(self):
-        return self.repositorioResultado.getNumeroCedulaMayorCandidato()
-        
+    def getMayorVoto(self):
+        return self.repositorioResultado.getNumeroVotacionMayorCandidato()

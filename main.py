@@ -156,12 +156,14 @@ def borrarResultado(id):
     json = miControladorResultado.delete(id)
     return jsonify(json)
 
+
+
 #Buscar los candidatos votados en una mesa
-#Ojo aqui /mesas/
 @app.route("/resultados/mesa/<string:id_mesa>", methods = ["GET"])
 def  inscritosMesa(id_mesa):
     json = miControladorResultado.getListarCandidatosMesa(id_mesa)
     return jsonify(json)
+
 
 #Buscar el candidato en las mesas
 @app.route("/resultados/mesa/<string:id_candidato>", methods = ["GET"])
@@ -169,10 +171,13 @@ def inscritoMesas(id_candidato):
     json = miControladorResultado.getListarMesasDeInscritoCandidato(id_candidato)
     return jsonify(json)
 
-@app.route("/resultados/maxdocument", methods=["GET"])
-def getMaxDocument():
-    json = miControladorResultado.getMayorCedula()
+#Buscar total de votos
+@app.route("/resultados/sumdocument", methods=["GET"])
+def getSumDocument():
+    json = miControladorResultado.getMayorVoto()
     return jsonify(json)
+
+
 
 if __name__ =="__main__":
     app.run(debug=False, port=9000)
